@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EverydayFinds — Order Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F6F1; --ink:#1B2430; --ink-soft:#4A5568;
+    --marigold:#E8A93B; --marigold-dark:#B77F1E; --teal:#1F6F63;
+    --card:#FFFFFF; --border:#E1E1D9; --red:#C0392B;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;background:var(--paper);color:var(--ink);padding:20px;max-width:900px;margin:0 auto;}
+  h1{font-family:'Space Grotesk',sans-serif;font-size:24px;margin-bottom:4px;}
+  .sub{color:var(--ink-soft);font-size:13px;margin-bottom:20px;}
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
+  .stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;}
+  .stat b{display:block;font-family:'Space Grotesk',sans-serif;font-size:20px;}
+  .stat span{font-size:12px;color:var(--ink-soft);}
+
+  form{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:24px;}
+  form h2{font-size:16px;margin-bottom:12px;font-family:'Space Grotesk',sans-serif;}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+  input,select{width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:6px;font-size:14px;font-family:'Inter',sans-serif;background:#fff;}
+  label{font-size:12px;color:var(--ink-soft);display:block;margin-bottom:3px;}
+  button{background:var(--marigold);color:var(--ink);border:none;padding:10px 20px;border-radius:6px;font-weight:600;font-size:14px;cursor:pointer;}
+  button:hover{background:var(--marigold-dark);color:#fff;}
+
+  table{width:100%;border-collapse:collapse;background:var(--card);border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+  th,td{text-align:left;padding:10px 12px;font-size:13px;border-bottom:1px solid var(--border);}
+  th{background:#EDEEE7;font-weight:600;}
+  .profit{color:var(--teal);font-weight:600;}
+  .status{padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600;}
+  .status-pending{background:#FDF0D5;color:var(--marigold-dark);}
+  .status-ordered{background:#DCEFEA;color:var(--teal);}
+  .status-delivered{background:#E1E9DC;color:#3D6B2C;}
+  .status-issue{background:#F8D7D5;color:var(--red);}
+  .del{color:var(--red);cursor:pointer;font-size:12px;background:none;border:none;padding:0;}
+  .empty{text-align:center;padding:30px;color:var(--ink-soft);font-size:13px;}
+  .loading{text-align:center;padding:30px;color:var(--ink-soft);}
+</style>
+</head>
+<body>
+
+<h1>EverydayFinds — Order Tracker</h1>
+<div class="sub">Log every order manually as you place it — data is saved automatically.</div>
+
+<div class="stats" id="stats"></div>
+
+<form id="orderForm">
+  <h2>Log a new order</h2>
+  <div class="row">
+    <div><label>Customer name</label><input type="text" id="customer" required></div>
+    <div><label>Product</label><input type="text" id="product" required></div>
+  </div>
+  <div class="row">
+    <div><label>Amount customer paid (₹)</label><input type="number" id="paid" required></div>
+    <div><label>Your cost from supplier (₹)</label><input type="number" id="cost" required></div>
+  </div>
+  <div class="row">
+    <div><label>Supplier order ID (optional)</label><input type="text" id="orderId"></div>
+    <div><label>Status</label>
+      <select id="status">
+        <option value="pending">Pending — payment received</option>
+        <option value="ordered">Ordered from supplier</option>
+        <option value="delivered">Delivered</option>
+        <option value="issue">Issue / return</option>
+      </select>
+    </div>
+  </div>
+  <button type="submit">Add order</button>
+</form>
+
+<div id="tableWrap" class="loading">Loading your orders…</div>
+
+<script>
+  let orders = [];
+
+  async function loadOrders(){
+    try{
+      const res = await window.storage.get('everydayfinds-orders', false);
+      orders = res ? JSON.parse(res.value) : [];
+    }catch(e){
+      orders = [];
+    }
+    render();
+  }
+
+  async function saveOrders(){
+    try{
+      await window.storage.set('everydayfinds-orders', JSON.stringify(orders), false);
+    }catch(e){
+      console.error('Save failed', e);
+    }
+  }
+
+  function statusClass(s){
+    return 'status-' + s;
+  }
+  function statusLabel(s){
+    return { pending:'Pending', ordered:'Ordered', delivered:'Delivered', issue:'Issue' }[s] || s;
+  }
+
+  function render(){
+    const wrap = document.getElementById('tableWrap');
+    const totalRevenue = orders.reduce((a,o)=>a+Number(o.paid),0);
+    const totalCost = orders.reduce((a,o)=>a+Number(o.cost),0);
+    const totalProfit = totalRevenue - totalCost;
+
+    document.getElementById('stats').innerHTML = `
+      <div class="stat"><b>${orders.length}</b><span>Total orders</span></div>
+      <div class="stat"><b>₹${totalRevenue}</b><span>Total revenue</span></div>
+      <div class="stat"><b class="profit">₹${totalProfit}</b><span>Total profit</span></div>
+    `;
+
+    if(orders.length === 0){
+      wrap.innerHTML = '<div class="empty">No orders logged yet — add your first one above.</div>';
+      return;
+    }
+
+    let rows = orders.slice().reverse().map((o, idx) => {
+      const realIdx = orders.length - 1 - idx;
+      const profit = Number(o.paid) - Number(o.cost);
+      return `<tr>
+        <td>${o.customer}</td>
+        <td>${o.product}</td>
+        <td>₹${o.paid}</td>
+        <td>₹${o.cost}</td>
+        <td class="profit">₹${profit}</td>
+        <td>${o.orderId || '—'}</td>
+        <td><span class="status ${statusClass(o.status)}">${statusLabel(o.status)}</span></td>
+        <td><button class="del" onclick="deleteOrder(${realIdx})">Remove</button></td>
+      </tr>`;
+    }).join('');
+
+    wrap.innerHTML = `
+      <table>
+        <thead><tr>
+          <th>Customer</th><th>Product</th><th>Paid</th><th>Cost</th><th>Profit</th><th>Order ID</th><th>Status</th><th></th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+  }
+
+  window.deleteOrder = async function(idx){
+    orders.splice(idx, 1);
+    await saveOrders();
+    render();
+  }
+
+  document.getElementById('orderForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    orders.push({
+      customer: document.getElementById('customer').value,
+      product: document.getElementById('product').value,
+      paid: document.getElementById('paid').value,
+      cost: document.getElementById('cost').value,
+      orderId: document.getElementById('orderId').value,
+      status: document.getElementById('status').value,
+      date: new Date().toISOString()
+    });
+    await saveOrders();
+    render();
+    e.target.reset();
+  });
+
+  loadOrders();
+</script>
+
+</body>
+</html>
