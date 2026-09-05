@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EverydayFinds | Useful Gadgets, Home Goods & Accessories in India</title>
+  <meta name="description" content="Shop practical, high-quality everyday gadgets, home organization items, and mobile accessories. Fast 2-4 day domestic delivery across India with Cash on Delivery & UPI.">
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       EVERYDAYFINDS DESIGN SYSTEM & STYLES
+       ========================================================================== */
+    :root {
+      --primary: #0f766e;        /* Deep Emerald Teal */
+      --primary-hover: #0d9488;  /* Vibrant Emerald */
+      --primary-light: #ccfbf1;  /* Soft Teal Tint */
+      --accent: #16a34a;         /* WhatsApp & Success Green */
+      --accent-hover: #15803d;
+      --upi-purple: #5b21b6;     /* UPI Brand Purple Accent */
+      --upi-purple-hover: #4c1d95;
+      
+      --bg-main: #f8fafc;        /* Soft neutral page background */
+      --bg-surface: #ffffff;     /* Clean white card surface */
+      --text-main: #0f172a;      /* Dark slate heading text */
+      --text-muted: #64748b;     /* Muted body text */
+      --text-light: #94a3b8;     
+      --border-color: #e2e8f0;   /* Light divider border */
+      
+      --badge-bg: #fef3c7;       /* Warm yellow discount badge */
+      --badge-text: #92400e;
+      --tag-green: #dcfce7;
+      --tag-green-text: #166534;
+      
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 4px 20px -2px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 12px 32px -4px rgba(15, 23, 42, 0.12);
+      
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Base Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    /* Container Utility */
+    .container {
+      width: 100%;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    /* Top Announcement Bar */
+    .announcement-bar {
+      background: linear-gradient(90deg, #0f172a 0%, #0f766e 100%);
+      color: #ffffff;
+      text-align: center;
+      padding: 8px 12px;
+      font-size: 0.825rem;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .announcement-bar span.highlight {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    /* Sticky Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.35rem;
+      color: var(--text-main);
+      letter-spacing: -0.5px;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--primary);
+      color: #ffffff;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(15, 118, 110, 0.3);
+    }
+
+    .brand-tag {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 2px 8px;
+      border-radius: 12px;
+      display: inline-block;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-shop-now {
+      background: var(--primary);
+      color: #ffffff;
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 0.875rem;
+      transition: var(--transition);
+      box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
+    }
+
+    .btn-shop-now:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding: 32px 0 24px;
+      background: linear-gradient(180deg, #ffffff 0%, var(--bg-main) 100%);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+
+    @media (min-width: 768px) {
+      .hero-section {
+        padding: 48px 0 36px;
+      }
+      .hero-grid {
+        grid-template-columns: 1.2fr 0.8fr;
+      }
+    }
+
+    .hero-content h1 {
+      font-size: 1.85rem;
+      line-height: 1.25;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+
+    @media (min-width: 768px) {
+      .hero-content h1 {
+        font-size: 2.5rem;
+      }
+    }
+
+    .hero-content h1 span.text-highlight {
+      color: var(--primary);
+      position: relative;
+    }
+
+    .hero-content p {
+      font-size: 0.975rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      max-width: 580px;
+      line-height: 1.6;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .badge-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-main);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .badge-item svg {
+      width: 16px;
+      height: 16px;
+      color: var(--primary);
+    }
+
+    .hero-banner-card {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #ffffff;
+      padding: 24px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hero-banner-card::before {
+      content: '';
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 140px;
+      height: 140px;
+      background: rgba(15, 118, 110, 0.3);
+      border-radius: 50%;
+      filter: blur(30px);
+    }
+
+    .hero-banner-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .hero-banner-sub {
+      font-size: 0.875rem;
+      color: #94a3b8;
+      margin-bottom: 16px;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 16px;
+    }
+
+    .stat-number {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #2dd4bf;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: #cbd5e1;
+    }
+
+    /* Trust Bar */
+    .trust-bar {
+      padding: 24px 0;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .trust-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 640px) {
+      .trust-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .trust-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      background: var(--bg-main);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+    }
+
+    .trust-icon {
+      width: 42px;
+      height: 42px;
+      min-width: 42px;
+      background: var(--primary-light);
+      color: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .trust-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .trust-text h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+
+    .trust-text p {
+      font-size: 0.775rem;
+      color: var(--text-muted);
+    }
+
+    /* Section Header */
+    .section-header {
+      text-align: center;
+      margin: 36px 0 20px;
+    }
+
+    .section-header h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.3px;
+    }
+
+    .section-header p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Category Filter Tabs */
+    .filter-wrapper {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: #ffffff;
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+      white-space: nowrap;
+      transition: var(--transition);
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(15, 118, 110, 0.2);
+    }
+
+    /* Search Input */
+    .search-box-wrapper {
+      max-width: 440px;
+      margin: 0 auto 24px;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px 16px 12px 42px;
+      border-radius: 30px;
+      border: 1px solid var(--border-color);
+      font-size: 0.9rem;
+      font-family: inherit;
+      background: #ffffff;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+      pointer-events: none;
+    }
+
+    /* Product Grid */
+    .product-grid {
+      display: grid;
+      /* Mobile: 2 columns, Desktop: 3 columns */
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-bottom: 48px;
+    }
+
+    @media (min-width: 768px) {
+      .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+    }
+
+    /* Product Card */
+    .product-card {
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: #cbd5e1;
+    }
+
+    .card-image-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 100%; /* 1:1 Aspect ratio */
+      background: #f1f5f9;
+      overflow: hidden;
+    }
+
+    .card-image-wrap img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .product-card:hover .card-image-wrap img {
+      transform: scale(1.05);
+    }
+
+    .badge-discount {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      font-size: 0.725rem;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 6px;
+      box-shadow: var(--shadow-sm);
+      z-index: 2;
+    }
+
+    .badge-tag {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--tag-green);
+      color: var(--tag-green-text);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 12px;
+      z-index: 2;
+    }
+
+    .card-body {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .product-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      height: 2.7em;
+    }
+
+    @media (min-width: 768px) {
+      .product-title {
+        font-size: 1.05rem;
+      }
+    }
+
+    .product-desc {
+      font-size: 0.775rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 14px;
+      margin-top: auto;
+      flex-wrap: wrap;
+    }
+
+    .current-price {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .original-price {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      text-decoration: line-through;
+    }
+
+    .save-badge {
+      font-size: 0.7rem;
+      color: #dc2626;
+      font-weight: 700;
+      background: #fef2f2;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    /* Action Buttons inside Card */
+    .card-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn-action {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.825rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: var(--transition);
+      text-align: center;
+    }
+
+    .btn-upi {
+      background: var(--upi-purple);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(91, 33, 182, 0.2);
+    }
+
+    .btn-upi:hover {
+      background: var(--upi-purple-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-whatsapp {
+      background: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(22, 163, 74, 0.2);
+    }
+
+    .btn-whatsapp:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    /* "Why Buy From Us" Section */
+    .why-section {
+      padding: 48px 0;
+      background: #ffffff;
+      border-top: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-top: 28px;
+    }
+
+    @media (min-width: 768px) {
+      .why-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .why-card {
+      text-align: center;
+      padding: 24px 20px;
+      border-radius: var(--radius-md);
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+    }
+
+    .why-icon-wrap {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 16px;
+      background: var(--primary-light);
+      color: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .why-icon-wrap svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .why-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-main);
+    }
+
+    .why-card p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* FAQ Accordion Section */
+    .faq-section {
+      padding: 48px 0;
+    }
+
+    .faq-container {
+      max-width: 720px;
+      margin: 24px auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .faq-item {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .faq-question {
+      width: 100%;
+      padding: 16px 20px;
+      text-align: left;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .faq-question svg {
+      width: 18px;
+      height: 18px;
+      transition: transform 0.3s ease;
+      color: var(--text-muted);
+    }
+
+    .faq-item.active .faq-question svg {
+      transform: rotate(180deg);
+      color: var(--primary);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      background: var(--bg-main);
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 200px;
+      padding: 14px 20px 18px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    /* Footer */
+    .site-footer {
+      background: #0f172a;
+      color: #94a3b8;
+      padding: 40px 0 24px;
+      border-top: 1px solid #1e293b;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      margin-bottom: 32px;
+    }
+
+    @media (min-width: 768px) {
+      .footer-grid {
+        grid-template-columns: 2fr 1fr 1fr;
+      }
+    }
+
+    .footer-brand h3 {
+      color: #ffffff;
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .footer-brand p {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      max-width: 400px;
+      margin-bottom: 16px;
+    }
+
+    .footer-heading {
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      letter-spacing: 0.3px;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 0.875rem;
+    }
+
+    .footer-links a:hover {
+      color: #2dd4bf;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #1e293b;
+      padding-top: 20px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+
+    /* Floating WhatsApp Button */
+    .floating-wa {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 54px;
+      height: 54px;
+      background: var(--accent);
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(22, 163, 74, 0.4);
+      z-index: 99;
+      transition: var(--transition);
+    }
+
+    .floating-wa:hover {
+      transform: scale(1.1);
+      background: var(--accent-hover);
+    }
+
+    .floating-wa svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    /* Modal Popup for Desktop UPI Payment */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 420px;
+      padding: 24px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      text-align: center;
+      transform: translateY(20px);
+      transition: var(--transition);
+    }
+
+    .modal-overlay.active .modal-card {
+      transform: translateY(0);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: #f1f5f9;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+    }
+
+    .modal-close:hover {
+      background: #e2e8f0;
+      color: var(--text-main);
+    }
+
+    .qr-frame {
+      background: #f8fafc;
+      border: 2px dashed #cbd5e1;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin: 16px 0;
+      display: inline-block;
+    }
+
+    .qr-frame img {
+      width: 180px;
+      height: 180px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .upi-id-box {
+      background: #f1f5f9;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
+
+    .btn-copy-upi {
+      background: var(--primary);
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .btn-copy-upi:hover {
+      background: var(--primary-hover);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="announcement-bar">
+    <span class="highlight">FAST DELIVERY</span>
+    <span>⚡ 2–4 Day Express Domestic Shipping Across India | COD Available</span>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="#" class="brand-logo">
+          <div class="brand-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+          </div>
+          <div>
+            EverydayFinds
+            <span class="brand-tag">India 🇮🇳</span>
+          </div>
+        </a>
+
+        <div class="header-actions">
+          <a href="#products" class="btn-shop-now">Shop Now</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="badge-item" style="margin-bottom: 12px; background: var(--primary-light); color: var(--primary); border: none;">
+            <span>✨ Practical Everyday Essentials</span>
+          </div>
+          <h1>Useful Products For Your <span class="text-highlight">Everyday Life</span></h1>
+          <p>Curated gadgets, home organization items, and smart accessories shipped directly from Indian domestic warehouses with guaranteed fast delivery.</p>
+          
+          <div class="hero-badges">
+            <div class="badge-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polyline></svg>
+              2-4 Day Delivery
+            </div>
+            <div class="badge-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="22" height="13" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+              Direct UPI / GPay
+            </div>
+            <div class="badge-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              Ships Domestic India
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-banner-card">
+          <div class="hero-banner-title">⚡ Express Delivery Promise</div>
+          <div class="hero-banner-sub">No month-long overseas waiting. All orders ship from local Indian centers.</div>
+          <div class="hero-stats">
+            <div>
+              <div class="stat-number">2–4 Days</div>
+              <div class="stat-label">Fast Delivery</div>
+            </div>
+            <div>
+              <div class="stat-number">100%</div>
+              <div class="stat-label">Verified Quality</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Bar -->
+  <section class="trust-bar">
+    <div class="container">
+      <div class="trust-grid">
+        <div class="trust-card">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="1" y="3" width="15" height="13"></rect>
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+              <circle cx="5.5" cy="18.5" r="2.5"></circle>
+              <circle cx="18.5" cy="18.5" r="2.5"></circle>
+            </svg>
+          </div>
+          <div class="trust-text">
+            <h4>2–4 Day Domestic Delivery</h4>
+            <p>Fast dispatch from Indian hubs via reliable courier partners.</p>
+          </div>
+        </div>
+
+        <div class="trust-card">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          </div>
+          <div class="trust-text">
+            <h4>Cash on Delivery Available</h4>
+            <p>Order easily & pay at your doorstep or directly via UPI.</p>
+          </div>
+        </div>
+
+        <div class="trust-card">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+            </svg>
+          </div>
+          <div class="trust-text">
+            <h4>Easy Replacement Policy</h4>
+            <p>Hassle-free 7-day replacements if anything arrives damaged.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Catalog Section -->
+  <section id="products" style="padding: 36px 0 48px;">
+    <div class="container">
+      <div class="section-header">
+        <h2>Trending Everyday Finds</h2>
+        <p>Select any item below to pay instantly via UPI or order directly over WhatsApp</p>
+      </div>
+
+      <!-- Search Box -->
+      <div class="search-box-wrapper">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search gadgets, organizers, lights..." oninput="handleSearch()">
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="filter-wrapper">
+        <button class="filter-btn active" onclick="filterProducts('all', this)">All Items</button>
+        <button class="filter-btn" onclick="filterProducts('gadgets', this)">Gadgets & Tech</button>
+        <button class="filter-btn" onclick="filterProducts('home', this)">Home Goods</button>
+        <button class="filter-btn" onclick="filterProducts('accessories', this)">Accessories</button>
+      </div>
+
+      <!-- Dynamic Product Grid -->
+      <div id="productGrid" class="product-grid">
+        <!-- Rendered by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Buy From Us -->
+  <section class="why-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Why Shop With EverydayFinds?</h2>
+        <p>Built for practical Indian buyers looking for quality and reliability</p>
+      </div>
+
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="why-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </div>
+          <h3>100% Quality Checked</h3>
+          <p>Every product is visually inspected prior to dispatch to ensure zero defects when it reaches your home.</p>
+        </div>
+
+        <div class="why-card">
+          <div class="why-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+          </div>
+          <h3>Fast Domestic Shipping</h3>
+          <p>We source directly from domestic supplier hubs in India, ensuring rapid delivery in 2-4 business days.</p>
+        </div>
+
+        <div class="why-card">
+          <div class="why-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </div>
+          <h3>Direct WhatsApp Support</h3>
+          <p>Got questions or order updates? Speak directly with our friendly support team via WhatsApp anytime.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Frequently Asked Questions</h2>
+        <p>Everything you need to know about placing your order</p>
+      </div>
+
+      <div class="faq-container">
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>How do I pay using UPI / GPay / PhonePe?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-answer">
+            Simply tap <strong>"Pay via UPI"</strong> on any product card. On mobile, it automatically opens your preferred UPI app (Google Pay, PhonePe, Paytm, or BHIM) pre-filled with the exact amount and our UPI ID (<code>9650858890@ybl</code>). On desktop, a QR code will pop up for quick mobile scanning!
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>How does Cash on Delivery (COD) work?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-answer">
+            To place a Cash on Delivery order, tap <strong>"Order on WhatsApp"</strong> on your desired item. Send the pre-filled message with your delivery address, and our team will confirm your order details immediately!
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>How long will delivery take?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-answer">
+            Because all items ship locally within India (not overseas), standard delivery takes just <strong>2 to 4 business days</strong> depending on your location. You will receive a tracking link via WhatsApp once dispatched.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>What if I receive a broken or wrong item?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-answer">
+            We offer a 7-day easy replacement policy. If your product is damaged or defective upon arrival, message us on WhatsApp with a short video/photo and we'll dispatch a free replacement immediately.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>EverydayFinds</h3>
+          <p>Your trusted destination for practical everyday gadgets, smart home organization tools, and accessories in India. Domestic shipping guaranteed.</p>
+          <p style="font-size: 0.8rem; color: #cbd5e1;">
+            <strong>UPI ID:</strong> 9650858890@ybl <br>
+            <strong>WhatsApp:</strong> +91 9650858890
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="#products">All Products</a></li>
+            <li><a href="#products" onclick="filterProducts('gadgets')">Gadgets & Tech</a></li>
+            <li><a href="#products" onclick="filterProducts('home')">Home Goods</a></li>
+            <li><a href="#products" onclick="filterProducts('accessories')">Accessories</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Customer Care</h4>
+          <ul class="footer-links">
+            <li><a href="https://wa.me/919650858890?text=Hi%20EverydayFinds,%20I%20need%20help%20with%20an%20order" target="_blank">Contact Support</a></li>
+            <li><a href="https://wa.me/919650858890?text=Hi%20EverydayFinds,%20I%20want%20to%20track%20my%20order" target="_blank">Track Order</a></li>
+            <li><a href="https://wa.me/919650858890?text=Hi%20EverydayFinds,%20I%20have%20a%20replacement%20request" target="_blank">Replacements</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; <span id="currentYear"></span> EverydayFinds. All rights reserved. Made for Indian shoppers 🇮🇳</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp Button -->
+  <a href="https://wa.me/919650858890?text=Hi%20EverydayFinds,%20I%20have%20a%20question%20about%20your%20products!" class="floating-wa" target="_blank" title="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-1.099 4.019 4.142-1.087z"/>
+    </svg>
+  </a>
+
+  <!-- Desktop UPI Modal -->
+  <div id="upiModal" class="modal-overlay" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeUpiModal()">&times;</button>
+      <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-main);" id="modalProductName">Pay via UPI</h3>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Scan QR code with GPay, PhonePe, Paytm, or BHIM</p>
+      
+      <div class="qr-frame">
+        <img id="qrImage" src="" alt="UPI Payment QR Code">
+      </div>
+
+      <div style="font-size: 1.1rem; font-weight: 800; color: var(--primary); margin-bottom: 12px;" id="modalProductPrice">
+        ₹0
+      </div>
+
+      <div class="upi-id-box">
+        <span>9650858890@ybl</span>
+        <button class="btn-copy-upi" onclick="copyUpiId()">Copy UPI ID</button>
+      </div>
+
+      <a id="modalWaBtn" href="#" target="_blank" class="btn-action btn-whatsapp" style="width: 100%;">
+        Confirm Payment on WhatsApp
+      </a>
+    </div>
+  </div>
+
+
+  <!-- ==========================================================================
+       JAVASCRIPT & PRODUCT DATABASE
+       ========================================================================== -->
+  <script>
+    /* ==========================================================================
+       PRODUCTS DATABASE (EDITABLE)
+       --------------------------------------------------------------------------
+       You can edit, add, or remove products in this array.
+       - id: Unique numeric identifier
+       - name: Display title of product
+       - category: 'gadgets' | 'home' | 'accessories'
+       - price: Current discounted price in INR (number)
+       - originalPrice: Old price before discount (number)
+       - image: Image URL (using placehold.co placeholder image)
+       - badge: Category highlight badge text
+       - description: Short product summary
+       ========================================================================== */
+    const PRODUCTS = [
+      {
+        id: 1,
+        name: "Mini desk organizer",
+        category: "home",
+        price: 349,
+        originalPrice: 499,
+        image: "https://placehold.co/600x600/0f766e/ffffff?text=Mini+Desk+Organizer",
+        badge: "Bestseller",
+        description: "Compact multi-slot storage for pens, notes, and everyday desk supplies."
+      },
+      {
+        id: 2,
+        name: "Wireless earbud stand",
+        category: "gadgets",
+        price: 279,
+        originalPrice: 399,
+        image: "https://placehold.co/600x600/2563eb/ffffff?text=Wireless+Earbud+Stand",
+        badge: "Trending",
+        description: "Sleek metallic dock to keep your TWS earbuds safe and easily accessible."
+      },
+      {
+        id: 3,
+        name: "LED strip night light",
+        category: "home",
+        price: 449,
+        originalPrice: 599,
+        image: "https://placehold.co/600x600/7c3aed/ffffff?text=LED+Strip+Night+Light",
+        badge: "Popular",
+        description: "Flexible USB-powered LED light strip for room ambient lighting & backdrops."
+      },
+      {
+        id: 4,
+        name: "Foldable phone stand",
+        category: "accessories",
+        price: 199,
+        originalPrice: 299,
+        image: "https://placehold.co/600x600/d97706/ffffff?text=Foldable+Phone+Stand",
+        badge: "Hot Deal",
+        description: "Portable pocket-sized adjustable stand for desk video calls and watching videos."
+      },
+      {
+        id: 5,
+        name: "Cable management box",
+        category: "home",
+        price: 329,
+        originalPrice: 449,
+        image: "https://placehold.co/600x600/475569/ffffff?text=Cable+Management+Box",
+        badge: "Top Utility",
+        description: "Neatly hide tangled power strips and charger cords for a clean workspace."
+      },
+      {
+        id: 6,
+        name: "Aroma diffuser, mini",
+        category: "home",
+        price: 599,
+        originalPrice: 799,
+        image: "https://placehold.co/600x600/db2777/ffffff?text=Mini+Aroma+Diffuser",
+        badge: "Must Have",
+        description: "Whisper-quiet air humidifier and essential oil diffuser with mood light."
+      }
+    ];
+
+    // Store Configurations
+    const STORE_CONFIG = {
+      upiId: "9650858890@ybl",
+      whatsappNumber: "919650858890",
+      storeName: "EverydayFinds"
+    };
+
+    let currentFilter = 'all';
+    let searchQuery = '';
+
+    // Initialize application
+    document.addEventListener('DOMContentLoaded', () => {
+      renderProducts();
+      document.getElementById('currentYear').textContent = new Date().getFullYear();
+    });
+
+    // Render Product Cards Grid
+    function renderProducts() {
+      const grid = document.getElementById('productGrid');
+      
+      const filtered = PRODUCTS.filter(p => {
+        const matchesCategory = (currentFilter === 'all' || p.category === currentFilter);
+        const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                              p.description.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesCategory && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 48px 16px; background: #ffffff; border-radius: 12px; border: 1px solid var(--border-color);">
+            <h3 style="font-size: 1.1rem; color: var(--text-main);">No products found</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Try searching for another gadget or filter category.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(product => {
+        const discountPercent = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+        const savingsAmount = product.originalPrice - product.price;
+        
+        // Deep Links
+        const upiLink = buildUpiLink(product);
+        const waLink = buildWhatsAppLink(product);
+
+        return `
+          <div class="product-card">
+            <div class="card-image-wrap">
+              <span class="badge-discount">${discountPercent}% OFF</span>
+              <span class="badge-tag">${product.badge}</span>
+              <img src="${product.image}" alt="${product.name}" loading="lazy" onerror="this.src='https://placehold.co/600x600/e2e8f0/64748b?text=${encodeURIComponent(product.name)}'">
+            </div>
+            
+            <div class="card-body">
+              <h3 class="product-title">${product.name}</h3>
+              <p class="product-desc">${product.description}</p>
+              
+              <div class="price-row">
+                <span class="current-price">₹${product.price}</span>
+                <span class="original-price">₹${product.originalPrice}</span>
+                <span class="save-badge">Save ₹${savingsAmount}</span>
+              </div>
+
+              <div class="card-actions">
+                <button onclick="handleUpiClick(${product.id})" class="btn-action btn-upi">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                    <line x1="2" y1="10" x2="22" y2="10"></line>
+                  </svg>
+                  Pay via UPI
+                </button>
+                <a href="${waLink}" target="_blank" class="btn-action btn-whatsapp">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-1.099 4.019 4.142-1.087z"/>
+                  </svg>
+                  Order on WhatsApp
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Build UPI Deep Link URI Scheme
+    function buildUpiLink(product) {
+      const pa = STORE_CONFIG.upiId;
+      const pn = encodeURIComponent(STORE_CONFIG.storeName);
+      const am = product.price;
+      const cu = "INR";
+      const tn = encodeURIComponent(`Order ${product.name}`);
+      return `upi://pay?pa=${pa}&pn=${pn}&am=${am}&cu=${cu}&tn=${tn}`;
+    }
+
+    // Build WhatsApp Pre-filled Message Link
+    function buildWhatsAppLink(product) {
+      const msg = `Hi EverydayFinds, I want to order:\n\n🛍️ *Product:* ${product.name}\n💰 *Price:* ₹${product.price} (MRP ₹${product.originalPrice})\n\nPlease share COD / payment and delivery steps!`;
+      return `https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encodeURIComponent(msg)}`;
+    }
+
+    // Handle UPI Click - Mobile opens app directly, Desktop shows QR Modal
+    function handleUpiClick(productId) {
+      const product = PRODUCTS.find(p => p.id === productId);
+      if (!product) return;
+
+      const upiUrl = buildUpiLink(product);
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+      if (isMobile) {
+        // Attempt native UPI deep link trigger
+        window.location.href = upiUrl;
+      } else {
+        // Show QR modal for desktop / laptop browsers
+        openUpiModal(product, upiUrl);
+      }
+    }
+
+    // Modal Control for Desktop UPI
+    function openUpiModal(product, upiUrl) {
+      const modal = document.getElementById('upiModal');
+      const qrImg = document.getElementById('qrImage');
+      const nameEl = document.getElementById('modalProductName');
+      const priceEl = document.getElementById('modalProductPrice');
+      const waBtn = document.getElementById('modalWaBtn');
+
+      nameEl.textContent = product.name;
+      priceEl.textContent = `Total to Pay: ₹${product.price}`;
+      
+      // Generate QR Code via QRServer API
+      const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(upiUrl)}`;
+      qrImg.src = qrApiUrl;
+
+      // Update WhatsApp notification button inside modal
+      const waMsg = `Hi EverydayFinds, I just initiated UPI payment of ₹${product.price} for *${product.name}*. Please verify and confirm my order!`;
+      waBtn.href = `https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encodeURIComponent(waMsg)}`;
+
+      modal.classList.add('active');
+    }
+
+    function closeUpiModal() {
+      document.getElementById('upiModal').classList.remove('active');
+    }
+
+    function closeModalOnBackdrop(e) {
+      if (e.target.id === 'upiModal') {
+        closeUpiModal();
+      }
+    }
+
+    // Copy UPI ID to Clipboard
+    function copyUpiId() {
+      navigator.clipboard.writeText(STORE_CONFIG.upiId).then(() => {
+        const btn = document.querySelector('.btn-copy-upi');
+        const origText = btn.textContent;
+        btn.textContent = "Copied!";
+        btn.style.background = "#16a34a";
+        setTimeout(() => {
+          btn.textContent = origText;
+          btn.style.background = "var(--primary)";
+        }, 2000);
+      });
+    }
+
+    // Category Filtering
+    function filterProducts(category, btnElement) {
+      currentFilter = category;
+      if (btnElement) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btnElement.classList.add('active');
+      }
+      renderProducts();
+    }
+
+    // Live Search Handler
+    function handleSearch() {
+      searchQuery = document.getElementById('searchInput').value;
+      renderProducts();
+    }
+
+    // FAQ Accordion Toggle
+    function toggleFaq(buttonEl) {
+      const item = buttonEl.parentElement;
+      const isActive = item.classList.contains('active');
+      
+      document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
+      
+      if (!isActive) {
+        item.classList.add('active');
+      }
+    }
+  </script>
+</body>
+</html>
