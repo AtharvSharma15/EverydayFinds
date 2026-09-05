@@ -1110,6 +1110,7 @@
         <button class="filter-btn" onclick="filterProducts('gadgets', this)">Gadgets & Tech</button>
         <button class="filter-btn" onclick="filterProducts('home', this)">Home Goods</button>
         <button class="filter-btn" onclick="filterProducts('accessories', this)">Accessories</button>
+        <button class="filter-btn" onclick="filterProducts('jewelry', this)">Jewelry</button>
       </div>
 
       <!-- Dynamic Product Grid -->
@@ -1234,6 +1235,7 @@
             <li><a href="#products" onclick="filterProducts('gadgets')">Gadgets & Tech</a></li>
             <li><a href="#products" onclick="filterProducts('home')">Home Goods</a></li>
             <li><a href="#products" onclick="filterProducts('accessories')">Accessories</a></li>
+            <li><a href="#products" onclick="filterProducts('jewelry')">Jewelry</a></li>
           </ul>
         </div>
 
@@ -1297,13 +1299,64 @@
        You can edit, add, or remove products in this array.
        - id: Unique numeric identifier
        - name: Display title of product
-       - category: 'gadgets' | 'home' | 'accessories'
+      - category: 'gadgets' | 'home' | 'accessories' | 'jewelry'
        - price: Current discounted price in INR (number)
        - originalPrice: Old price before discount (number)
        - image: Image URL (using placehold.co placeholder image)
        - badge: Category highlight badge text
        - description: Short product summary
        ========================================================================== */
+    const jewelryProducts = [
+      {
+        id: 7,
+        name: "Rose Gold Butterfly Pendant Necklace with Crystal Accents",
+        price: 399,
+        mrp: 899,
+        image: "https://deodap.in/cdn/shop/files/KVF3z0y8b2.png?v=1787986021&width=1100",
+        link: "https://deodap.in/products/rose-gold-plated-butterfly-pendant-necklace-with-crystal-accents-and-fine-alloy-chain"
+      },
+      {
+        id: 8,
+        name: "Cute White Enamel Bunny Pendant & Earrings Set",
+        price: 449,
+        mrp: 999,
+        image: "https://deodap.in/cdn/shop/files/DkUOUDKLQH.jpg?v=1784523706&width=1100",
+        link: "https://deodap.in/products/cute-white-enamel-bunny-rabbit-pendant-necklace-crystal-drop-earrings-jewelry-se"
+      },
+      {
+        id: 9,
+        name: "Blue Stone Crystal Long Dangle Party Earrings",
+        price: 349,
+        mrp: 799,
+        image: "https://deodap.in/cdn/shop/files/sZyjuvXLNR.jpg?v=1786164070&width=1100",
+        link: "https://deodap.in/products/blue-stone-crystal-long-dangle-earrings-for-women-party-wear-jewellery"
+      },
+      {
+        id: 10,
+        name: "Black Stone Crystal Drop Earrings",
+        price: 349,
+        mrp: 799,
+        image: "https://deodap.in/cdn/shop/files/SQhKv4896B.jpg?v=1786164071&width=990",
+        link: "https://deodap.in/products/black-stone-crystal-drop-earrings-for-women-stylish-party-wear-jewellery"
+      },
+      {
+        id: 11,
+        name: "AD Stone Micro Gold Panjo Bracelet & Ring Set",
+        price: 599,
+        mrp: 1299,
+        image: "https://deodap.in/cdn/shop/files/jantgb3Sar.jpg?v=1787723852&width=1100",
+        link: "https://deodap.in/products/ad-stone-micro-gold-panjo-and-ring-and-breslet-ad-white-and-red-stone"
+      },
+      {
+        id: 12,
+        name: "Red Clover Design Gold-Tone Bracelet",
+        price: 399,
+        mrp: 899,
+        image: "https://deodap.in/cdn/shop/files/lHXvV7UgeZ.jpg?v=1786164071&width=1100",
+        link: "https://deodap.in/products/red-clover-design-gold-tone-bracelet-for-women-stylish-fashion-jewellery"
+      }
+    ];
+
     const PRODUCTS = [
       {
         id: 1,
@@ -1370,7 +1423,14 @@
         link: "https://deodap.in/products/premium-grey-botanical-designer-silent-wall-clock-minimalist-decorative-wooden-clock-for-living-room-bedroom-office",
         badge: "Must Have",
         description: "Botanical-inspired grey wooden wall clock with a quiet movement and clean finish."
-      }
+      },
+      ...jewelryProducts.map(product => ({
+        ...product,
+        category: "jewelry",
+        originalPrice: product.mrp,
+        badge: "New Arrival",
+        description: product.name
+      }))
     ];
 
     // Store Configurations
