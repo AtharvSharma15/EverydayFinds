@@ -9,13 +9,29 @@ const SORTS = [
   { value: "discount", label: "Biggest Discount" },
 ];
 
-export default function Catalog({ products, categories, category, setCategory, sort, setSort, loading, onQuickView }) {
-  const pills = [{ slug: "all", label: "All Finds" }, ...categories];
+export default function Catalog({
+  products = [],
+  categories = [],
+  category,
+  setCategory,
+  sort,
+  setSort,
+  loading,
+  onQuickView,
+}) {
+  // Ensure safe fallback arrays for categories and products
+  const safeCategories = Array.isArray(categories) ? categories : [];
+  const safeProducts = Array.isArray(products) ? products : [];
+
+  const pills = [{ slug: "all", label: "All Finds" }, ...safeCategories];
+
   return (
     <section id="catalog" className="mx-auto max-w-7xl scroll-mt-24 px-4 py-16 sm:px-6 lg:px-8">
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <span className="text-xs font-semibold uppercase tracking-widest text-terracotta">The Collection</span>
+          <span className="text-xs font-semibold uppercase tracking-widest text-terracotta">
+            The Collection
+          </span>
           <h2 className="mt-2 font-serif text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
             Shop everyday finds
           </h2>
@@ -38,7 +54,7 @@ export default function Catalog({ products, categories, category, setCategory, s
       </div>
 
       <div className="mb-8 flex flex-wrap gap-2.5">
-        {pills.map((c) => (
+        {(pills || []).map((c) => (
           <button
             key={c.slug}
             data-testid={`category-pill-${c.slug}`}
@@ -60,14 +76,14 @@ export default function Catalog({ products, categories, category, setCategory, s
             <div key={i} className="aspect-[3/4] animate-pulse rounded-2xl bg-cream" />
           ))}
         </div>
-      ) : products.length === 0 ? (
+      ) : safeProducts.length === 0 ? (
         <div className="rounded-2xl border border-borderline bg-surface py-20 text-center text-stoney">
           No finds match your search. Try another keyword.
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
-          {products.map((p, i) => (
-            <ProductCard key={p.id} product={p} index={i} onQuickView={onQuickView} />
+          {safeProducts.map((p, i) => (
+            <ProductCard key={p.id || i} product={p} index={i} onQuickView={onQuickView} />
           ))}
         </div>
       )}
