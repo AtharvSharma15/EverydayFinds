@@ -17,8 +17,19 @@ import OrderTracker from "./components/OrderTracker";
 
 function Store() {
   const { config } = useStore();
-  const [allProducts, setAllProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+
+  // 1. Initialize products state from localStorage cache if present
+  const [allProducts, setAllProducts] = useState(() => {
+    try {
+      const cached = localStorage.getItem("ef_cached_products");
+      return cached ? JSON.parse(cached) : [];
+    } catch (e) {
+      return [];
+    }
+  });
+
+  // Only show full skeleton loader if local cache is completely empty
+  const [loading, setLoading] = useState(() => allProducts.length === 0);
   const [category, setCategory] = useState("all");
   const [sort, setSort] = useState("");
   const [search, setSearch] = useState("");
@@ -28,22 +39,37 @@ function Store() {
   const [checkout, setCheckout] = useState({ open: false, mode: "upi", meta: null });
 
   useEffect(() => {
-    setLoading(true);
+    // Keep cached products visible while loading fresh data in the background
+    if (allProducts.length === 0) {
+      setLoading(true);
+    }
+
     getProducts({ sort })
       .then((d) => {
-        // Fall back to empty array if d or d.products is undefined
-        const productsList = Array.isArray(d?.products) ? d.products : [];
+        const productsList = Array.isArray(d?.products)
+          ? d.products
+          : Array.isArray(d)
+          ? d
+          : [];
+
         setAllProducts(productsList);
+
+        // Save default catalog response to localStorage for instant future loads
+        if (!sort && productsList.length > 0) {
+          try {
+            localStorage.setItem("ef_cached_products", JSON.stringify(productsList));
+          } catch (e) {
+            console.error("Failed to write to localStorage:", e);
+          }
+        }
       })
       .catch((err) => {
         console.error("Failed to load products:", err);
-        setAllProducts([]);
       })
       .finally(() => setLoading(false));
-  }, [sort]);
+  }, [sort, allProducts.length]);
 
   const filtered = useMemo(() => {
-    // Ensure list is always an array before filtering
     let list = Array.isArray(allProducts) ? allProducts : [];
     if (category !== "all") list = list.filter((p) => p.category === category);
     if (search.trim()) {
