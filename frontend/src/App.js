@@ -30,23 +30,41 @@ function Store() {
   useEffect(() => {
     setLoading(true);
     getProducts({ sort })
-      .then((d) => setAllProducts(d.products))
+      .then((d) => {
+        // Fall back to empty array if d or d.products is undefined
+        const productsList = Array.isArray(d?.products) ? d.products : [];
+        setAllProducts(productsList);
+      })
+      .catch((err) => {
+        console.error("Failed to load products:", err);
+        setAllProducts([]);
+      })
       .finally(() => setLoading(false));
   }, [sort]);
 
   const filtered = useMemo(() => {
-    let list = allProducts;
+    // Ensure list is always an array before filtering
+    let list = Array.isArray(allProducts) ? allProducts : [];
     if (category !== "all") list = list.filter((p) => p.category === category);
     if (search.trim()) {
       const q = search.toLowerCase();
-      list = list.filter((p) => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q));
+      list = list.filter(
+        (p) =>
+          p.name?.toLowerCase().includes(q) ||
+          p.description?.toLowerCase().includes(q)
+      );
     }
     return list;
   }, [allProducts, category, search]);
 
   const openWhatsApp = () => {
     const num = config?.whatsapp_number || "919650858890";
-    window.open(`https://wa.me/${num}?text=${encodeURIComponent("Hi EverydayFinds! I'd like to know more about your products.")}`, "_blank");
+    window.open(
+      `https://wa.me/${num}?text=${encodeURIComponent(
+        "Hi EverydayFinds! I'd like to know more about your products."
+      )}`,
+      "_blank"
+    );
   };
 
   const categories = config?.categories || [];
@@ -57,7 +75,7 @@ function Store() {
       <main>
         <Hero config={config} onWhatsApp={openWhatsApp} />
         <TrustBar />
-        <Bestsellers products={allProducts} onQuickView={setQuickView} />
+        <Bestsellers products={allProducts || []} onQuickView={setQuickView} />
         <Catalog
           products={filtered}
           categories={categories}
