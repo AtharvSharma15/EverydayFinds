@@ -104,9 +104,15 @@ async def compute_cart(cart_id: str) -> dict:
     }
 
 
-# ---------- Routes ----------
+# ---------- Root Health Check ----------
+@app.get("/")
+async def root_health():
+    return {"status": "ok", "message": "EverydayFinds Backend Service Running"}
+
+
+# ---------- API Routes ----------
 @api.get("/")
-async def root():
+async def api_root():
     return {"status": "ok", "store": "EverydayFinds"}
 
 
@@ -247,6 +253,7 @@ async def track_order(q: str):
     return order
 
 
+# ---------- Startup & Middleware ----------
 @app.on_event("startup")
 async def startup():
     count = await db.products.count_documents({})
@@ -254,7 +261,6 @@ async def startup():
         for p in PRODUCTS:
             await db.products.update_one({"id": p["id"]}, {"$set": p}, upsert=True)
         logger.info("Seeded %d products", len(PRODUCTS))
-    # Seed a sample tracked order for demo
     demo = await db.orders.find_one({"order_id": "EF-89421"})
     if not demo:
         await db.orders.insert_one({
@@ -273,9 +279,11 @@ async def startup():
 
 
 app.include_router(api)
+
+# Allow all origins to prevent CORS errors on Vercel
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.environ.get("CORS_ORIGINS", "*").split(","),
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
