@@ -1,17 +1,20 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Star, Eye, Plus } from "lucide-react";
+import { Star, Eye, Plus, Minus } from "lucide-react";
 import { inr } from "../api";
 import { useStore } from "../store";
 
-export default function ProductCard({ product, index = 0, onQuickView }) {
-  const { add, justAdded } = useStore();
+export default function ProductCard({ product, index = 0, onQuickView, onBuyNow }) {
+  const { cart, add, updateQuantity } = useStore();
   
-  // Safe math fallbacks to avoid NaN
+  // Safe math fallbacks
   const mrp = product?.mrp || 0;
   const price = product?.price || 0;
   const discount = mrp > 0 ? Math.round(((mrp - price) / mrp) * 100) : 0;
-  const added = justAdded === product?.id;
+
+  // Find if item is already in cart to get current quantity
+  const cartItem = cart?.items?.find((i) => i.id === product.id);
+  const qty = cartItem ? cartItem.quantity : 0;
 
   return (
     <motion.div
@@ -23,7 +26,7 @@ export default function ProductCard({ product, index = 0, onQuickView }) {
       className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-borderline bg-surface transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-ink/5"
     >
       <div>
-        {/* Image & Overlay Badges */}
+        {/* Image & Badges */}
         <div className="relative aspect-square overflow-hidden bg-cream">
           <img
             src={product?.image}
@@ -37,7 +40,6 @@ export default function ProductCard({ product, index = 0, onQuickView }) {
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
 
-          {/* Badges: Tightened padding & positioning for mobile */}
           {product?.badge && (
             <span className="absolute left-1.5 top-1.5 rounded-full bg-ink/85 px-2 py-0.5 text-[9px] font-semibold text-sand backdrop-blur sm:left-3 sm:top-3 sm:px-2.5 sm:py-1 sm:text-[11px]">
               {product.badge}
@@ -50,7 +52,6 @@ export default function ProductCard({ product, index = 0, onQuickView }) {
             </span>
           )}
 
-          {/* Quick View Button: Scaled down for mobile */}
           <button
             onClick={() => onQuickView(product)}
             data-testid="product-quick-view-button"
@@ -60,7 +61,7 @@ export default function ProductCard({ product, index = 0, onQuickView }) {
           </button>
         </div>
 
-        {/* Content Section: Scaled padding and typography */}
+        {/* Content */}
         <div className="flex flex-col p-2.5 sm:p-4">
           <div className="mb-1 flex items-center gap-1 text-[11px] text-muted sm:text-xs">
             <Star className="h-3 w-3 fill-amberglow text-amberglow sm:h-3.5 sm:w-3.5" />
@@ -77,32 +78,58 @@ export default function ProductCard({ product, index = 0, onQuickView }) {
         </div>
       </div>
 
-      {/* Footer / Price & Add to Cart */}
-      <div className="flex items-end justify-between p-2.5 pt-0 sm:p-4 sm:pt-0">
-        <div className="flex flex-col sm:flex-row sm:items-baseline sm:gap-1.5">
-          <span
-            data-testid="product-price"
-            className="font-serif text-sm font-bold text-ink sm:text-lg"
-          >
-            {inr(product?.price)}
-          </span>
-          {mrp > price && (
-            <span className="text-[10px] text-muted line-through sm:text-xs">
-              {inr(mrp)}
+      {/* Pricing & Dual Action Buttons */}
+      <div className="flex flex-col gap-2 p-2.5 pt-0 sm:p-4 sm:pt-0">
+        <div className="flex items-baseline justify-between">
+          <div className="flex items-baseline gap-1">
+            <span data-testid="product-price" className="font-serif text-sm font-bold text-ink sm:text-lg">
+              {inr(price)}
             </span>
-          )}
+            {mrp > price && (
+              <span className="text-[10px] text-muted line-through sm:text-xs">
+                {inr(mrp)}
+              </span>
+            )}
+          </div>
         </div>
 
-        <button
-          onClick={() => add(product)}
-          data-testid="product-add-to-cart-button"
-          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sand transition-all active:scale-90 sm:h-10 sm:w-10 ${
-            added ? "bg-sage" : "bg-terracotta hover:bg-terracottadark"
-          }`}
-          aria-label="Add to cart"
-        >
-          <Plus className="h-4 w-4 sm:h-5 sm:w-5" />
-        </button>
+        <div className="flex items-center gap-1.5">
+          {/* Quick Buy Now Button */}
+          <button
+            onClick={() => onBuyNow(product)}
+            className="flex-1 rounded-full border border-terracotta bg-cream py-1.5 text-[11px] font-semibold text-terracotta transition-colors hover:bg-terracotta hover:text-sand sm:py-2 sm:text-xs"
+          >
+            Buy Now
+          </button>
+
+          {/* Dynamic Quantity Stepper (Blinkit Style) */}
+          {qty > 0 ? (
+            <div className="flex h-7 items-center justify-between rounded-full bg-terracotta px-1 text-sand sm:h-8">
+              <button
+                onClick={() => updateQuantity(product.id, qty - 1)}
+                className="flex h-5 w-5 items-center justify-center rounded-full hover:bg-black/10 active:scale-90"
+              >
+                <Minus className="h-3 w-3" />
+              </button>
+              <span className="px-1.5 text-xs font-bold">{qty}</span>
+              <button
+                onClick={() => add(product)}
+                className="flex h-5 w-5 items-center justify-center rounded-full hover:bg-black/10 active:scale-90"
+              >
+                <Plus className="h-3 w-3" />
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => add(product)}
+              data-testid="product-add-to-cart-button"
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-terracotta text-sand transition-all active:scale-90 sm:h-8 sm:w-8"
+              aria-label="Add to cart"
+            >
+              <Plus className="h-4 w-4" />
+            </button>
+          )}
+        </div>
       </div>
     </motion.div>
   );

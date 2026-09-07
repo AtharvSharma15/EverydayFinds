@@ -16,7 +16,7 @@ import Footer from "./components/Footer";
 import OrderTracker from "./components/OrderTracker";
 
 function Store() {
-  const { config } = useStore();
+  const { config, add } = useStore();
 
   // 1. Initialize products state from localStorage cache if present
   const [allProducts, setAllProducts] = useState(() => {
@@ -39,7 +39,6 @@ function Store() {
   const [checkout, setCheckout] = useState({ open: false, mode: "upi", meta: null });
 
   useEffect(() => {
-    // Keep cached products visible while loading fresh data in the background
     if (allProducts.length === 0) {
       setLoading(true);
     }
@@ -54,7 +53,6 @@ function Store() {
 
         setAllProducts(productsList);
 
-        // Save default catalog response to localStorage for instant future loads
         if (!sort && productsList.length > 0) {
           try {
             localStorage.setItem("ef_cached_products", JSON.stringify(productsList));
@@ -68,6 +66,12 @@ function Store() {
       })
       .finally(() => setLoading(false));
   }, [sort, allProducts.length]);
+
+  // Handle direct Buy Now: Adds item to cart and immediately pops up the Checkout Modal
+  const handleBuyNow = (product) => {
+    add(product);
+    setCheckout({ open: true, mode: "upi", meta: null });
+  };
 
   const filtered = useMemo(() => {
     let list = Array.isArray(allProducts) ? allProducts : [];
@@ -101,7 +105,11 @@ function Store() {
       <main>
         <Hero config={config} onWhatsApp={openWhatsApp} />
         <TrustBar />
-        <Bestsellers products={allProducts || []} onQuickView={setQuickView} />
+        <Bestsellers
+          products={allProducts || []}
+          onQuickView={setQuickView}
+          onBuyNow={handleBuyNow}
+        />
         <Catalog
           products={filtered}
           categories={categories}
@@ -111,6 +119,7 @@ function Store() {
           setSort={setSort}
           loading={loading}
           onQuickView={setQuickView}
+          onBuyNow={handleBuyNow}
         />
         <Testimonials />
         <Newsletter />
