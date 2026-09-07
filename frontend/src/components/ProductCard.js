@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Star, Eye, Plus, Minus } from "lucide-react";
+import { Star, Eye, Plus, Minus, ShoppingBag } from "lucide-react";
 import { inr } from "../api";
 import { useStore } from "../store";
 
@@ -12,9 +12,24 @@ export default function ProductCard({ product, index = 0, onQuickView, onBuyNow 
   const price = product?.price || 0;
   const discount = mrp > 0 ? Math.round(((mrp - price) / mrp) * 100) : 0;
 
-  // Find if item is already in cart to get current quantity
-  const cartItem = cart?.items?.find((i) => i.id === product.id);
+  // Check if item exists in cart state
+  const cartItem = cart?.items?.find((i) => i.id === product?.id);
   const qty = cartItem ? cartItem.quantity : 0;
+
+  const handleAddAndBuy = (e) => {
+    e.stopPropagation();
+    if (qty === 0) {
+      add(product);
+    }
+    if (onBuyNow) {
+      onBuyNow(product);
+    }
+  };
+
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    add(product);
+  };
 
   return (
     <motion.div
@@ -26,7 +41,7 @@ export default function ProductCard({ product, index = 0, onQuickView, onBuyNow 
       className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-borderline bg-surface transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-ink/5"
     >
       <div>
-        {/* Image & Badges */}
+        {/* Image & Overlay Badges */}
         <div className="relative aspect-square overflow-hidden bg-cream">
           <img
             src={product?.image}
@@ -52,6 +67,7 @@ export default function ProductCard({ product, index = 0, onQuickView, onBuyNow 
             </span>
           )}
 
+          {/* Quick View Button */}
           <button
             onClick={() => onQuickView(product)}
             data-testid="product-quick-view-button"
@@ -61,7 +77,7 @@ export default function ProductCard({ product, index = 0, onQuickView, onBuyNow 
           </button>
         </div>
 
-        {/* Content */}
+        {/* Content Section */}
         <div className="flex flex-col p-2.5 sm:p-4">
           <div className="mb-1 flex items-center gap-1 text-[11px] text-muted sm:text-xs">
             <Star className="h-3 w-3 fill-amberglow text-amberglow sm:h-3.5 sm:w-3.5" />
@@ -78,7 +94,7 @@ export default function ProductCard({ product, index = 0, onQuickView, onBuyNow 
         </div>
       </div>
 
-      {/* Pricing & Dual Action Buttons */}
+      {/* Pricing & Blinkit/Zepto Style Action Controls */}
       <div className="flex flex-col gap-2 p-2.5 pt-0 sm:p-4 sm:pt-0">
         <div className="flex items-baseline justify-between">
           <div className="flex items-baseline gap-1">
@@ -93,41 +109,57 @@ export default function ProductCard({ product, index = 0, onQuickView, onBuyNow 
           </div>
         </div>
 
+        {/* Dynamic Controls Area */}
         <div className="flex items-center gap-1.5">
-          {/* Quick Buy Now Button */}
-          <button
-            onClick={() => onBuyNow(product)}
-            className="flex-1 rounded-full border border-terracotta bg-cream py-1.5 text-[11px] font-semibold text-terracotta transition-colors hover:bg-terracotta hover:text-sand sm:py-2 sm:text-xs"
-          >
-            Buy Now
-          </button>
-
-          {/* Dynamic Quantity Stepper (Blinkit Style) */}
           {qty > 0 ? (
-            <div className="flex h-7 items-center justify-between rounded-full bg-terracotta px-1 text-sand sm:h-8">
+            /* Blinkit/Zepto Quantity Stepper when added */
+            <div className="flex h-8 w-full items-center justify-between rounded-full bg-terracotta px-2 text-sand shadow-sm transition-all sm:h-9">
               <button
-                onClick={() => updateQuantity(product.id, qty - 1)}
-                className="flex h-5 w-5 items-center justify-center rounded-full hover:bg-black/10 active:scale-90"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  updateQuantity(product.id, qty - 1);
+                }}
+                className="flex h-6 w-6 items-center justify-center rounded-full transition-colors hover:bg-black/15 active:scale-90"
+                aria-label="Decrease quantity"
               >
-                <Minus className="h-3 w-3" />
+                <Minus className="h-3.5 w-3.5" />
               </button>
-              <span className="px-1.5 text-xs font-bold">{qty}</span>
+
+              <div className="flex items-center gap-1 text-xs font-bold sm:text-sm">
+                <ShoppingBag className="h-3.5 w-3.5 text-sand/80" />
+                <span>{qty}</span>
+              </div>
+
               <button
-                onClick={() => add(product)}
-                className="flex h-5 w-5 items-center justify-center rounded-full hover:bg-black/10 active:scale-90"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  add(product);
+                }}
+                className="flex h-6 w-6 items-center justify-center rounded-full transition-colors hover:bg-black/15 active:scale-90"
+                aria-label="Increase quantity"
               >
-                <Plus className="h-3 w-3" />
+                <Plus className="h-3.5 w-3.5" />
               </button>
             </div>
           ) : (
-            <button
-              onClick={() => add(product)}
-              data-testid="product-add-to-cart-button"
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-terracotta text-sand transition-all active:scale-90 sm:h-8 sm:w-8"
-              aria-label="Add to cart"
-            >
-              <Plus className="h-4 w-4" />
-            </button>
+            /* Initial State: Buy Now + Cart Icon */
+            <>
+              <button
+                onClick={handleAddAndBuy}
+                className="flex-1 rounded-full border border-terracotta bg-cream py-1.5 text-[11px] font-semibold text-terracotta transition-colors hover:bg-terracotta hover:text-sand active:scale-95 sm:py-2 sm:text-xs"
+              >
+                Buy Now
+              </button>
+
+              <button
+                onClick={handleAddToCart}
+                data-testid="product-add-to-cart-button"
+                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-terracotta text-sand shadow-sm transition-transform hover:bg-terracottadark active:scale-90 sm:h-8 sm:w-8"
+                aria-label="Add to cart"
+              >
+                <ShoppingBag className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              </button>
+            </>
           )}
         </div>
       </div>
