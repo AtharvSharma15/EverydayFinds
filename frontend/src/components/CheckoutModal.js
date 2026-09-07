@@ -49,7 +49,9 @@ export default function CheckoutModal({ open, mode, meta, onClose }) {
     ...form,
     items: cart.items.map((i) => ({ product_id: i.id, name: i.name, price: i.price, quantity: i.quantity, image: i.image })),
     subtotal: cart.subtotal,
-    shipping: cart.shipping,
+    // FIX: hardcoded to 0 defensively — shipping should never be charged,
+    // regardless of what's in cart state.
+    shipping: 0,
     discount: meta?.discount || 0,
     total,
     payment_method: method,

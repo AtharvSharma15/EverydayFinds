@@ -17,9 +17,9 @@ export default function CartDrawer({ onCheckout }) {
       ? Math.round((cart.subtotal * applied.value) / 100)
       : Math.min(applied.value, cart.subtotal)
     : 0;
-  const total = Math.max(0, cart.subtotal - discount) + cart.shipping;
-  const remaining = cart.free_ship_threshold - cart.subtotal;
-  const progress = Math.min(100, (cart.subtotal / cart.free_ship_threshold) * 100);
+  // FIX: no shipping added to the total anymore — total is just
+  // subtotal minus any discount.
+  const total = Math.max(0, cart.subtotal - discount);
 
   const applyCoupon = () => {
     const code = coupon.trim().toUpperCase();
@@ -75,17 +75,10 @@ export default function CartDrawer({ onCheckout }) {
               </div>
             ) : (
               <>
+                {/* FIX: removed the "Add ₹X for free shipping" progress bar —
+                    shipping is always free now, so a static line is enough. */}
                 <div className="border-b border-borderline bg-cream px-5 py-3">
-                  {remaining > 0 ? (
-                    <p className="text-xs font-medium text-stoney">
-                      Add <span className="font-bold text-terracotta">{inr(remaining)}</span> more for FREE shipping
-                    </p>
-                  ) : (
-                    <p className="text-xs font-bold text-sage">🎉 You've unlocked FREE shipping!</p>
-                  )}
-                  <div className="mt-2 h-2 overflow-hidden rounded-full bg-borderline">
-                    <div className="h-full rounded-full bg-sage transition-all duration-500" style={{ width: `${progress}%` }} />
-                  </div>
+                  <p className="text-xs font-bold text-sage">🎉 Free shipping on all orders!</p>
                 </div>
 
                 <div className="flex-1 space-y-3 overflow-y-auto px-5 py-4">
@@ -140,7 +133,7 @@ export default function CartDrawer({ onCheckout }) {
                   <div className="space-y-1.5 text-sm">
                     <Row label="Subtotal" value={inr(cart.subtotal)} testid="cart-subtotal-amount" />
                     {discount > 0 && <Row label={`Discount (${applied.code})`} value={`- ${inr(discount)}`} accent />}
-                    <Row label="Shipping" value={cart.shipping === 0 ? "FREE" : inr(cart.shipping)} />
+                    <Row label="Shipping" value="FREE" />
                     <div className="flex items-center justify-between border-t border-borderline pt-2 text-base font-bold text-ink">
                       <span>Total</span>
                       <span data-testid="cart-total-amount" className="font-serif text-xl">{inr(total)}</span>

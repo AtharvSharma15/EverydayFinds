@@ -25,6 +25,9 @@ db = client[os.environ["DB_NAME"]]
 UPI_ID = os.environ.get("UPI_ID", "9650858890@ybl")
 UPI_PAYEE_NAME = os.environ.get("UPI_PAYEE_NAME", "EverydayFinds")
 WHATSAPP_NUMBER = os.environ.get("WHATSAPP_NUMBER", "919650858890")
+# NOTE: shipping is now always free — this threshold is no longer used for
+# pricing, kept only so /config doesn't break anything on the frontend that
+# still references it. Safe to remove later once frontend no longer reads it.
 FREE_SHIP_THRESHOLD = 799
 
 app = FastAPI(title="EverydayFinds API")
@@ -92,7 +95,8 @@ async def compute_cart(cart_id: str) -> dict:
         line = prod["price"] * it["quantity"]
         subtotal += line
         detailed.append({**prod, "quantity": it["quantity"], "line_total": line})
-    shipping = 0 if (subtotal >= FREE_SHIP_THRESHOLD or subtotal == 0) else 59
+    # FIX: shipping is now always free — no threshold logic, no flat fee.
+    shipping = 0
     return {
         "cart_id": cart_id,
         "items": detailed,
@@ -100,7 +104,8 @@ async def compute_cart(cart_id: str) -> dict:
         "subtotal": subtotal,
         "shipping": shipping,
         "free_ship_threshold": FREE_SHIP_THRESHOLD,
-        "total": subtotal + shipping,
+        # FIX: total is just the subtotal now, nothing added.
+        "total": subtotal,
     }
 
 
@@ -231,6 +236,11 @@ async def create_order(order: OrderIn):
     order_id = gen_order_id()
     steps = ["Order Placed", "Packed", "In Transit", "Delivered"]
     record = order.model_dump()
+    # FIX: force shipping to 0 and total to subtotal server-side too, so a
+    # stale/uncached frontend can never sneak an old shipping charge into a
+    # real saved order even if compute_cart's fix hasn't been picked up yet.
+    record["shipping"] = 0
+    record["total"] = record["subtotal"] - record.get("discount", 0)
     record.update({
         "order_id": order_id,
         "status": "Order Placed",
@@ -261,21 +271,10 @@ async def startup():
         for p in PRODUCTS:
             await db.products.update_one({"id": p["id"]}, {"$set": p}, upsert=True)
         logger.info("Seeded %d products", len(PRODUCTS))
-    demo = await db.orders.find_one({"order_id": "EF-89421"})
-    if not demo:
-        await db.orders.insert_one({
-            "order_id": "EF-89421",
-            "customer_name": "Aanya Sharma",
-            "phone": "9876543210",
-            "email": "aanya@example.com",
-            "address": "12 MG Road, Bengaluru",
-            "pincode": "560001",
-            "items": [{"product_id": "p-travel-tumbler", "name": "Premium Stainless Steel Insulated Travel Tumbler (900ML)", "price": 699, "quantity": 1, "image": PRODUCTS[1]["image"]}],
-            "subtotal": 699, "shipping": 0, "discount": 0, "total": 699,
-            "payment_method": "upi", "status": "In Transit", "steps": ["Order Placed", "Packed", "In Transit", "Delivered"],
-            "current_step": 2, "created_at": now_iso(),
-        })
-        logger.info("Seeded demo order EF-89421")
+    # REMOVED: the fake demo order ("EF-89421" / "Aanya Sharma") that used to
+    # be seeded here on every startup. That was fabricated test data sitting
+    # in the real orders collection — removed so order tracking only ever
+    # shows genuine customer orders.
 
 
 app.include_router(api)
