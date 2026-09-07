@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
+import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from "react";
 import * as api from "./api";
 
 const StoreContext = createContext(null);
@@ -30,6 +30,14 @@ function getCartId() {
   return id;
 }
 
+// Recompute totals locally so the UI can update instantly, without
+// waiting for the server round-trip.
+function recomputeTotals(items) {
+  const subtotal = items.reduce((sum, it) => sum + it.price * it.quantity, 0);
+  const count = items.reduce((sum, it) => sum + it.quantity, 0);
+  return { subtotal, count, shipping: 0, total: subtotal };
+}
+
 export function StoreProvider({ children }) {
   const [cartId] = useState(getCartId);
   const [config, setConfig] = useState(DEFAULT_CONFIG);
@@ -37,7 +45,10 @@ export function StoreProvider({ children }) {
   const [cartOpen, setCartOpen] = useState(false);
   const [justAdded, setJustAdded] = useState(null);
 
-  // Helper to ensure cart object always maintains valid array properties
+  // Holds pending debounce timers per product id, so rapid clicks on the
+  // same item collapse into a single network request instead of one per click.
+  const updateTimers = useRef({});
+
   const safeSetCart = (data) => {
     if (!data || typeof data !== "object") {
       setCart(DEFAULT_CART);
@@ -90,21 +101,55 @@ export function StoreProvider({ children }) {
     }
   };
 
-  const update = async (pid, qty) => {
-    try {
-      const data = await api.updateCartItem(cartId, pid, qty);
-      safeSetCart(data);
-    } catch (err) {
-      console.error("Failed to update cart item:", err);
+  // FIX: optimistic + debounced update. The visible quantity/total change
+  // instantly on every click; the actual server sync only fires 400ms after
+  // the last click on that same item, so rapid clicking sends one request
+  // instead of many, and the UI never has to "wait" or "catch up."
+  const update = (pid, qty) => {
+    setCart((prev) => {
+      let items;
+      if (qty <= 0) {
+        items = prev.items.filter((it) => it.id !== pid);
+      } else {
+        items = prev.items.map((it) => (it.id === pid ? { ...it, quantity: qty } : it));
+      }
+      return { ...prev, items, ...recomputeTotals(items) };
+    });
+
+    if (updateTimers.current[pid]) {
+      clearTimeout(updateTimers.current[pid]);
     }
+    updateTimers.current[pid] = setTimeout(async () => {
+      try {
+        const data = await api.updateCartItem(cartId, pid, qty);
+        safeSetCart(data);
+      } catch (err) {
+        console.error("Failed to update cart item:", err);
+        // Re-sync with the server truth if the optimistic update drifted
+        // due to a failed request.
+        refreshCart();
+      } finally {
+        delete updateTimers.current[pid];
+      }
+    }, 400);
   };
 
   const remove = async (pid) => {
+    // Optimistic removal too, for the same instant-feedback reason.
+    setCart((prev) => {
+      const items = prev.items.filter((it) => it.id !== pid);
+      return { ...prev, items, ...recomputeTotals(items) };
+    });
+    if (updateTimers.current[pid]) {
+      clearTimeout(updateTimers.current[pid]);
+      delete updateTimers.current[pid];
+    }
     try {
       const data = await api.removeCartItem(cartId, pid);
       safeSetCart(data);
     } catch (err) {
       console.error("Failed to remove cart item:", err);
+      refreshCart();
     }
   };
 
