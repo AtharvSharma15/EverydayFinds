@@ -89,16 +89,34 @@ export function StoreProvider({ children }) {
     refreshCart();
   }, [refreshCart]);
 
-  const add = async (product, qty = 1) => {
-    try {
-      const data = await api.addToCart(cartId, product.id, qty);
-      safeSetCart(data);
-      setJustAdded(product.id);
-      setCartOpen(true);
-      setTimeout(() => setJustAdded(null), 1500);
-    } catch (err) {
-      console.error("Failed to add to cart:", err);
-    }
+  // FIX: no longer opens the cart drawer on every click, and updates the
+  // UI instantly instead of waiting for the (possibly slow) server response.
+  const add = (product, qty = 1) => {
+    setCart((prev) => {
+      const existing = prev.items.find((it) => it.id === product.id);
+      let items;
+      if (existing) {
+        items = prev.items.map((it) =>
+          it.id === product.id ? { ...it, quantity: it.quantity + qty } : it
+        );
+      } else {
+        items = [...prev.items, { ...product, quantity: qty }];
+      }
+      return { ...prev, items, ...recomputeTotals(items) };
+    });
+
+    setJustAdded(product.id);
+    setTimeout(() => setJustAdded(null), 1500);
+
+    // Sync with the server quietly in the background — the person doesn't
+    // need to wait for this, or see the cart pop open, to keep browsing.
+    api
+      .addToCart(cartId, product.id, qty)
+      .then((data) => safeSetCart(data))
+      .catch((err) => {
+        console.error("Failed to add to cart:", err);
+        refreshCart();
+      });
   };
 
   // FIX: optimistic + debounced update. The visible quantity/total change
