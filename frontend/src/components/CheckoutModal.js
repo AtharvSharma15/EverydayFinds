@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { QRCodeSVG } from "qrcode.react";
-import { X, Copy, Check, CheckCircle2, MessageCircle, QrCode, Truck, PackageCheck } from "lucide-react";
+import { X, Copy, Check, CheckCircle2, MessageCircle, QrCode, Truck, PackageCheck, ExternalLink } from "lucide-react";
 import { inr, createOrder } from "../api";
 import { useStore } from "../store";
 
@@ -49,8 +49,6 @@ export default function CheckoutModal({ open, mode, meta, onClose }) {
     ...form,
     items: cart.items.map((i) => ({ product_id: i.id, name: i.name, price: i.price, quantity: i.quantity, image: i.image })),
     subtotal: cart.subtotal,
-    // FIX: hardcoded to 0 defensively — shipping should never be charged,
-    // regardless of what's in cart state.
     shipping: 0,
     discount: meta?.discount || 0,
     total,
@@ -199,24 +197,44 @@ export default function CheckoutModal({ open, mode, meta, onClose }) {
 
                 {payMethod === "upi" && (
                   <div data-testid="upi-payment-modal" className="mt-5 flex flex-col items-center rounded-2xl border border-borderline bg-cream p-5">
-                    <p className="text-sm font-medium text-stoney">Scan with GPay / PhonePe / Paytm</p>
-                    <div className="my-4 rounded-2xl bg-white p-4 shadow-sm" data-testid="upi-qr-image">
-                      <QRCodeSVG value={upiLink} size={180} fgColor="#1C1917" level="M" />
+                    {/* AUTOMATIC MOBILE APP LAUNCH BUTTON */}
+                    <a
+                      href={upiLink}
+                      data-testid="upi-intent-button"
+                      className="flex w-full items-center justify-center gap-2 rounded-full bg-terracotta py-3.5 text-sm font-semibold text-sand shadow-md transition-transform hover:bg-terracottadark active:scale-95"
+                    >
+                      <ExternalLink className="h-4 w-4" /> Open GPay / PhonePe / Paytm
+                    </a>
+                    <p className="mt-2 text-center text-xs text-muted">
+                      Tap above to open payment apps on mobile
+                    </p>
+
+                    <div className="my-4 flex w-full items-center gap-3">
+                      <div className="h-[1px] flex-1 bg-borderline"></div>
+                      <span className="text-[11px] font-medium uppercase text-muted">or scan qr</span>
+                      <div className="h-[1px] flex-1 bg-borderline"></div>
                     </div>
-                    <div className="flex items-center gap-2 rounded-full border border-borderline bg-surface px-4 py-2">
+
+                    <div className="rounded-2xl bg-white p-4 shadow-sm" data-testid="upi-qr-image">
+                      <QRCodeSVG value={upiLink} size={160} fgColor="#1C1917" level="M" />
+                    </div>
+
+                    <div className="mt-3 flex items-center gap-2 rounded-full border border-borderline bg-surface px-4 py-2">
                       <span className="font-mono text-sm font-semibold text-ink">{upiId}</span>
                       <button onClick={copyUpi} data-testid="upi-copy-id-button" className="text-terracotta">
                         {copied ? <Check className="h-4 w-4 text-sage" /> : <Copy className="h-4 w-4" />}
                       </button>
                     </div>
+
                     <p className="mt-3 text-center text-sm text-stoney">
                       Paying <span className="font-bold text-ink">{inr(total)}</span> to {payee}
                     </p>
+
                     <input
                       data-testid="upi-utr-input"
                       value={utr}
                       onChange={(e) => setUtr(e.target.value)}
-                      placeholder="Enter UPI transaction / UTR ID"
+                      placeholder="Enter 12-digit UPI transaction / UTR ID"
                       className="mt-4 w-full rounded-xl border border-borderline bg-surface px-4 py-3 text-sm outline-none focus:border-terracotta"
                     />
                     {error && <p className="mt-2 text-sm font-medium text-terracotta">{error}</p>}
@@ -224,7 +242,7 @@ export default function CheckoutModal({ open, mode, meta, onClose }) {
                       onClick={placeUpiOrder}
                       disabled={busy}
                       data-testid="upi-submit-payment-button"
-                      className="mt-4 w-full rounded-full bg-terracotta py-3.5 text-sm font-semibold text-sand transition-colors hover:bg-terracottadark disabled:opacity-60"
+                      className="mt-4 w-full rounded-full bg-ink py-3.5 text-sm font-semibold text-sand transition-colors hover:bg-ink/90 disabled:opacity-60"
                     >
                       {busy ? "Placing order..." : "I've paid — Place Order"}
                     </button>
