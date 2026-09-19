@@ -14,6 +14,7 @@ import Testimonials from "./components/Testimonials";
 import Newsletter from "./components/Newsletter";
 import Footer from "./components/Footer";
 import OrderTracker from "./components/OrderTracker";
+import { Analytics } from "@vercel/analytics/react";
 
 function Store() {
   const { config } = useStore();
@@ -134,6 +135,7 @@ export default function App() {
   return (
     <StoreProvider>
       <Store />
+      <Analytics />
     </StoreProvider>
   );
 }
